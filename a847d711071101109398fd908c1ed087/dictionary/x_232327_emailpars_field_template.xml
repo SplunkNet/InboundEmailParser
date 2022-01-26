@@ -15,7 +15,7 @@
                 <element inactive_on_update="false" label="Same line" value="same_line"/>
             </choice>
         </element>
-        <element attributes="encode_utf8=false,readonly_clickthrough=true" label="Email template" max_length="32" name="email_template" read_only="true" reference="x_232327_emailpars_email_template" type="reference"/>
+        <element attributes="encode_utf8=false,readonly_clickthrough=true" label="Email template" max_length="32" name="email_template" read_only="true" reference="x_232327_emailpars_email_template" reference_cascade_rule="delete" type="reference"/>
         <element hint="Field name in JSON object." label="Map to field" mandatory="true" max_length="80" name="map_to_field" type="string"/>
         <element attributes="edge_encryption_enabled=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" read_only="true" type="string"/>
         <element default="100" label="Order" max_length="40" name="order" type="integer"/>

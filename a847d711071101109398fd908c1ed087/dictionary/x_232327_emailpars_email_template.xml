@@ -2,6 +2,10 @@
     <element label="Email Template" max_length="40" name="x_232327_emailpars_email_template" type="collection">
         <element attributes="edge_encryption_enabled=true" label="Name" mandatory="true" max_length="80" name="name" type="string"/>
         <element attributes="edge_encryption_enabled=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" read_only="true" type="string"/>
+        <element default="javascript:gs.getUserID();" dynamic_default_value="2fd8e97bef3221002841f7f775c0fbc1" label="Owner" mandatory="true" max_length="32" name="owner" reference="sys_user" reference_qual="roles=admin^ORroles=x_232327_emailpars.admin^ORroles=x_232327_emailpars.editor^EQ" reference_qual_condition="roles=admin^ORroles=x_232327_emailpars.admin^ORroles=x_232327_emailpars.editor^EQ" type="reference" use_dynamic_default="true"/>
         <element default="(function(fieldData, email) {&#13;&#10;&#13;&#10;&#9;// two properties are passed to the script&#13;&#10;&#9;// fieldData - JSON object containing all mapped fields from the field templates&#13;&#10;&#9;// email - email record currently being parsed&#13;&#10;&#13;&#10;&#9;try {&#13;&#10;&#9;&#9;// fieldData can be manipulated as needed; new values added, existing values updated etc.&#13;&#10;&#9;} catch (e) {&#13;&#10;&#9;&#9;gs.error(&quot;Error in &lt;template name&gt; template: &quot; + e.toString());&#13;&#10;&#9;}&#13;&#10;&#13;&#10;&#9;// the 'fieldData' property must be returned from the script&#13;&#10;&#9;return fieldData;&#13;&#10;&#9;&#13;&#10;})(fieldData, email);" label="Post-processing script" max_length="8000" name="post_processing_script" type="script"/>
+        <index name="index">
+            <element name="owner"/>
+        </index>
     </element>
 </database>
