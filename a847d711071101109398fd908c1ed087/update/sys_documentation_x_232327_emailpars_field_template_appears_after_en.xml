@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="appears_after" label="Appears after" language="en" table="x_232327_emailpars_field_template">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>appears_after</element>
+            <help/>
+            <hint>Text that this field will appear after.  For example, if the email is broken into sections then this would be the section name.</hint>
+            <label>Appears after</label>
+            <language>en</language>
+            <name>x_232327_emailpars_field_template</name>
+            <plural>Appears afters</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2022-01-26 12:15:10</sys_created_on>
+            <sys_id>980c9f1d071101109398fd908c1ed09b</sys_id>
+            <sys_mod_count>1</sys_mod_count>
+            <sys_name>Appears after</sys_name>
+            <sys_package display_value="Inbound Email Parser" source="x_232327_emailpars">a847d711071101109398fd908c1ed087</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Inbound Email Parser">a847d711071101109398fd908c1ed087</sys_scope>
+            <sys_update_name>sys_documentation_x_232327_emailpars_field_template_appears_after_en</sys_update_name>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2022-01-26 12:32:15</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

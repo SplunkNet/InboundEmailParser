@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_policy_action">
+    <sys_ui_policy_action action="INSERT_OR_UPDATE">
+        <cleared>false</cleared>
+        <disabled>ignore</disabled>
+        <field>pre_text</field>
+        <mandatory>true</mandatory>
+        <sys_class_name>sys_ui_policy_action</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-01-26 12:19:20</sys_created_on>
+        <sys_id>bdec139d071101109398fd908c1ed08e</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>pre_text</sys_name>
+        <sys_package display_value="Inbound Email Parser" source="x_232327_emailpars">a847d711071101109398fd908c1ed087</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Inbound Email Parser">a847d711071101109398fd908c1ed087</sys_scope>
+        <sys_update_name>sys_ui_policy_action_bdec139d071101109398fd908c1ed08e</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-01-26 12:19:20</sys_updated_on>
+        <table>x_232327_emailpars_field_template</table>
+        <ui_policy display_value="Standard Parsing Options">e25c575d071101109398fd908c1ed047</ui_policy>
+        <visible>true</visible>
+    </sys_ui_policy_action>
+</record_update>

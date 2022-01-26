@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_232327_emailpars.fieldTemplateConflicts</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description>Check if a field name conflicts with another for the same time</description>
+        <name>fieldTemplateConflicts</name>
+        <script><![CDATA[fieldTemplateConflicts = function() {
+    var gqFieldTemplate = new global.GlideQuery(x_232327_emailpars.EmailParser.FIELD_TABLE)
+        .where('email_template', current.getValue('email_template'))
+        .where('map_to_field', current.getValue('map_to_field'))
+        .where('sys_id', '!=', current.getUniqueValue());
+
+    if (gqFieldTemplate.count() > 0) {
+        gqFieldTemplate = gqFieldTemplate.select('map_to_field')
+            .reduce(function(arr, e) {
+                arr.push(e);
+                return arr;
+            }, []);
+
+        var field_links = gqFieldTemplate.map(function(field_json) {
+            var field_link = "<a class='web' href='" +x_232327_emailpars.EmailParser.FIELD_TABLE + ".do?sys_id=" + field_json.sys_id + "'>" + field_json.map_to_field + "</a>";
+            return field_link;
+        });
+
+		return field_links.join(', ');
+    }
+    return "";
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-01-26 14:24:49</sys_created_on>
+        <sys_id>4c59bb19079101109398fd908c1ed021</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_name>fieldTemplateConflicts</sys_name>
+        <sys_package display_value="Inbound Email Parser" source="x_232327_emailpars">a847d711071101109398fd908c1ed087</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Inbound Email Parser">a847d711071101109398fd908c1ed087</sys_scope>
+        <sys_update_name>sys_script_include_4c59bb19079101109398fd908c1ed021</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-01-26 14:31:12</sys_updated_on>
+    </sys_script_include>
+</record_update>

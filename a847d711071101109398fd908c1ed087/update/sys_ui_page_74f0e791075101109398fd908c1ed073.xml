@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script><![CDATA[var selectedTemplateType = 'sender'; // default label type
+
+function preview(template_type) {
+	
+	// check if a preview record is selected
+	if (gel('preview_record').value == '') return;
+	
+	var template = gel('template').value;
+	var preview_record = gel('preview_record').value;	
+	
+	var ga = new GlideAjax('x_232327_emailpars.PreviewEmailParserAJAX');
+	ga.addParam('sysparm_name', 'previewTemplate');
+	ga.addParam('sysparm_parse_template', template);
+	ga.addParam('sysparm_parse_email', preview_record);
+
+	ga.getXMLAnswer(function (response) {
+		var json = JSON.parse(response);
+		gel('rendered_record').innerHTML = "<pre>" + JSON.stringify(json, '', 3) + "</pre>";
+	});
+
+}]]></client_script>
+        <description>Preview email template against selected email</description>
+        <direct>false</direct>
+        <endpoint>x_232327_emailpars_PreviewEmailTemplate.do</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+	<j:set var="jvar_table_name" value="${RP.getParameterValue('sysparm_table_name')}" />
+	<j2:set var="jvar_label_template" value="${RP.getParameterValue('sysparm_label_template')}" />
+	<j2:set var="jvar_return_label_template" value="${RP.getParameterValue('sysparm_return_label_template')}" />
+	
+	<div style="display:none">
+		<input type="text" id="template" name="template" value="${sysparm_template}"></input>
+	</div>
+
+	<div class="form-horizontal">
+		<div class="form-group">
+			<label style="font-weight:bold" for="preview_record">${gs.getMessage('Please select a sample email')}:</label>
+			
+			<g2:ui_reference onChange="preview()" style="width:100%" table="sys_email" query="type=received" name="preview_record" completer="AJAXTableCompleter" />
+			
+			<div style="width:100%;margin-top:20px;" id="rendered_record"><i>${gs.getMessage('Select an email to preview the template')}</i></div>
+		</div>
+	</div>
+
+</j:jelly>]]></html>
+        <name>PreviewEmailTemplate</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-01-26 12:39:30</sys_created_on>
+        <sys_id>74f0e791075101109398fd908c1ed073</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>PreviewEmailTemplate</sys_name>
+        <sys_package display_value="Inbound Email Parser" source="x_232327_emailpars">a847d711071101109398fd908c1ed087</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Inbound Email Parser">a847d711071101109398fd908c1ed087</sys_scope>
+        <sys_update_name>sys_ui_page_74f0e791075101109398fd908c1ed073</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-01-26 12:39:30</sys_updated_on>
+    </sys_ui_page>
+</record_update>

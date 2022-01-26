@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="Field Template" max_length="40" name="x_232327_emailpars_field_template" type="collection">
+        <element default="true" label="Active" max_length="40" name="active" type="boolean"/>
+        <element label="Advanced" max_length="40" name="advanced" type="boolean"/>
+        <element hint="Text that this field will appear after.  For example, if the email is broken into sections then this would be the section name." label="Appears after" max_length="200" name="appears_after" type="string"/>
+        <element choice="1" hint="Is the data on a single line or multiple." label="Data spans" max_length="40" name="data_spans" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Multi line" value="multi_line"/>
+                <element inactive_on_update="false" label="Single line" value="single_line"/>
+            </choice>
+        </element>
+        <element choice="1" hint="Where does the data start, on the same line as the pre-text or on the next line." label="Data starts on" max_length="40" name="data_starts_on" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Next line" value="next_line"/>
+                <element inactive_on_update="false" label="Same line" value="same_line"/>
+            </choice>
+        </element>
+        <element attributes="encode_utf8=false,readonly_clickthrough=true" label="Email template" max_length="32" name="email_template" read_only="true" reference="x_232327_emailpars_email_template" type="reference"/>
+        <element hint="Field name in JSON object." label="Map to field" mandatory="true" max_length="80" name="map_to_field" type="string"/>
+        <element attributes="edge_encryption_enabled=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" read_only="true" type="string"/>
+        <element default="100" label="Order" max_length="40" name="order" type="integer"/>
+        <element default="(function(fieldData /* field data created by template */) {&#13;&#10;&#13;&#10;&#9;// must return a string value, typically a modified version of fieldData&#13;&#10;&#9;return fieldData;&#13;&#10;&#9;&#13;&#10;})(fieldData);" hint="Script that can be run after the field has been parsed.  Allows for further modifications to be made." label="Post-processing script" max_length="8000" name="post_processing_script" type="script"/>
+        <element hint="Text indicating the end of the data (leave empty for next new line)" label="Post-text" max_length="200" name="post_text" type="string"/>
+        <element hint="Text indicating the start of the data" label="Pre-text" max_length="200" name="pre_text" type="string"/>
+        <element default="(function(email /* email currently being parsed */) {&#10;&#10;&#9;// must return a string value or JSON object&#10;&#9;return &quot;&quot;;&#10;&#9;&#10;})(email);" label="Script" max_length="8000" name="script" type="script"/>
+        <index name="index">
+            <element name="email_template"/>
+        </index>
+    </element>
+</database>

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <active>true</active>
+        <api_name>x_232327_emailpars.EmailParser</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>EmailParser</name>
+        <script><![CDATA[var EmailParser = Class.create();
+
+EmailParser.TYPE_SINGLE_LINE = 'single_line';
+EmailParser.TYPE_MULTI_LINE = 'multi_line';
+EmailParser.STARTS_ON_SAME_LINE = 'same_line';
+EmailParser.STARTS_ON_NEXT_LINE = 'next_line';
+EmailParser.EMAIL_TABLE = 'x_232327_emailpars_email_template';
+EmailParser.FIELD_TABLE = 'x_232327_emailpars_field_template';
+
+EmailParser.prototype = {
+	initialize: function (emailSysID, templateSysID) {
+		this.email_fields = {};
+		this.email_lines = [];
+
+		this.template = new GlideRecord(EmailParser.EMAIL_TABLE);
+		this.template.get(templateSysID);
+
+		this.email = new GlideRecord('sys_email');
+		this.email.get(emailSysID);
+
+		// split the email body by line and add blank line to help with parsing
+		this.email_lines = this.email.body_text.split('\n');
+		this.email_lines.push(" ");
+	},
+
+	/*
+	 * parse email
+	 */
+	parse: function () {
+
+		var fieldTemplate = new GlideRecord(EmailParser.FIELD_TABLE);
+		fieldTemplate.query('email_template', this.template.getUniqueValue());
+		fieldTemplate.addNotNullQuery('map_to_field');
+		fieldTemplate.orderBy('order');
+		fieldTemplate.addActiveQuery();
+		fieldTemplate.query();
+
+		while (fieldTemplate.next()) {
+			if (fieldTemplate.getValue('advanced') == true) {
+				// advanced field template so call script
+				// pass in the current email and use the result as the field value
+				var gse = new GlideScopedEvaluator();
+				gse.putVariable('email', this.email);
+				this.email_fields[fieldTemplate.getValue('map_to_field')] = gse.evaluateScript(fieldTemplate, 'script');
+			} else {
+				var fieldIndex = 0;
+				for (fieldIndex = 0; fieldIndex < this.email_lines.length; fieldIndex++) {
+					if (this.email_lines[fieldIndex].startsWith(fieldTemplate.getValue('pre_text'))) {
+						var processField = true;
+
+						// have found a matching field, do we need to check if its after a particular
+						// piece of text.  This caters for 'sections' in the email
+						if (fieldTemplate.getValue('appears_after') && fieldTemplate.getValue('appears_after') != '') {
+							processField = false;
+							// need to make sure this field is after the text specified (caters for sections in the email)
+							// work backwards from the current index and check each line
+							for (var i = fieldIndex; i > 0; i--) {
+								if (this.email_lines[i].trim() == fieldTemplate.getValue('appears_after')) {
+									processField = true;
+									break;
+								}
+							}
+						}
+
+						if (processField) this._parseField(fieldIndex, fieldTemplate);
+						break;
+					}
+				}
+			}
+		}
+
+		// now do any post-processing from the email template
+		var gsePost = new GlideScopedEvaluator();
+		gsePost.putVariable("fieldData", this.email_fields);
+		gsePost.putVariable('email', this.email);
+		this.email_fields = gsePost.evaluateScript(this.template, 'post_processing_script');
+
+		this.email_fields["json_body"] = JSON.stringify(this.email_fields);
+
+	},
+
+	/*
+	 * internal method
+	 * parse the specified field
+	 *
+	 * @param {integer} fieldIndex line index in email body where field starts
+	 * @param {GlideRecord} fieldTemplate
+	 */
+	_parseField: function (fieldIndex, fieldTemplate) {
+
+		this.email_fields[fieldTemplate.getValue('map_to_field')] = "";
+		var fieldData = [];
+
+		if (fieldTemplate.getValue('data_starts_on') == EmailParser.STARTS_ON_SAME_LINE) {
+			// the data starts on the same line as the pre-text so grab all the text from the rest of the line and push it to the stack
+			var tempData = this.email_lines[fieldIndex].replace(fieldTemplate.getValue('pre_text'), '').trim() + '';
+			fieldData.push(tempData);
+		} else if (fieldTemplate.getValue('data_spans') == EmailParser.TYPE_SINGLE_LINE) {
+			// otherwise, we'll assume that the data starts on the next line, and in this case we're only expecting a single line
+			// just grab that and push it to the stack
+			if (this.email_lines[fieldIndex + 1] == '') {
+				fieldData.push('');
+			} else {
+				fieldData.push(this.email_lines[++fieldIndex].trim());
+			}
+		}
+
+		// if the expected data can appear on multiple lines then start grabbing each line until we either hit a blank line
+		// or the post_text text.  The blank line is a big assumption but it's either that or the defined post_text, otherwise
+		// it would be too unpredicable
+		if (fieldTemplate.getValue('data_spans') == EmailParser.TYPE_MULTI_LINE) {
+			fieldIndex++;
+			var post_text = fieldTemplate.getValue('post_text') || "";
+			var x = this.email_lines.length;
+			var y = this.email_lines;
+			while (fieldIndex < this.email_lines.length &&
+				((post_text == '' && this.email_lines[fieldIndex].trim() != '') ||
+					(post_text != '' && !this.email_lines[fieldIndex].startsWith(fieldTemplate.getValue('post_text'))))) {
+				fieldData.push(this.email_lines[fieldIndex].trim() + '');
+				fieldIndex++;
+			}
+		}
+
+		fieldData = fieldData.join('\n');
+
+		// pass the resulting data to the post-processing script
+		var gse = new GlideScopedEvaluator();
+		// scripted values need to have the following parameters passed
+		gse.putVariable("fieldData", fieldData);
+		this.email_fields[fieldTemplate.getValue('map_to_field')] = gse.evaluateScript(fieldTemplate, 'post_processing_script');
+
+	},
+
+	/*
+	 * debug method
+	 *
+	 * @param {string} templateSysID sys_id of email template
+	 */
+	_showBody: function () {
+		gs.info("Email Parser: Email Body: " + this.email_lines);
+		gs.info("Email Parser: Email Fields: " + JSON.stringify(this.email_fields, '', 3));
+	},
+
+
+	type: 'EmailParser'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-01-26 12:48:28</sys_created_on>
+        <sys_id>2ac22b15075101109398fd908c1ed0b3</sys_id>
+        <sys_mod_count>10</sys_mod_count>
+        <sys_name>EmailParser</sys_name>
+        <sys_package display_value="Inbound Email Parser" source="x_232327_emailpars">a847d711071101109398fd908c1ed087</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Inbound Email Parser">a847d711071101109398fd908c1ed087</sys_scope>
+        <sys_update_name>sys_script_include_2ac22b15075101109398fd908c1ed0b3</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-01-26 14:21:29</sys_updated_on>
+    </sys_script_include>
+</record_update>
