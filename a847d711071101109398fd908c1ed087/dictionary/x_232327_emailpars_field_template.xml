@@ -19,6 +19,7 @@
         <element hint="Field name in JSON object." label="Map to field" mandatory="true" max_length="80" name="map_to_field" type="string"/>
         <element attributes="edge_encryption_enabled=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" read_only="true" type="string"/>
         <element default="100" label="Order" max_length="40" name="order" type="integer"/>
+        <element hint="Run script after field has been parsed." label="Post-processing" max_length="40" name="post_processing" type="boolean"/>
         <element default="(function(fieldData /* field data created by template */) {&#13;&#10;&#13;&#10;&#9;// must return a string value, typically a modified version of fieldData&#13;&#10;&#9;return fieldData;&#13;&#10;&#9;&#13;&#10;})(fieldData);" hint="Script that can be run after the field has been parsed.  Allows for further modifications to be made." label="Post-processing script" max_length="8000" name="post_processing_script" type="script"/>
         <element hint="Text indicating the end of the data (leave empty for next new line)" label="Post-text" max_length="200" name="post_text" type="string"/>
         <element hint="Text indicating the start of the data" label="Pre-text" max_length="200" name="pre_text" type="string"/>

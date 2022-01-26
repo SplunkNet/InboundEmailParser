@@ -35,13 +35,18 @@ EmailParser.prototype = {
 	/*
 	 * parse email
 	 */
-	parse: function () {
+	parse: function (field_sys_id) {
 
 		var fieldTemplate = new GlideRecord(EmailParser.FIELD_TABLE);
-		fieldTemplate.query('email_template', this.template.getUniqueValue());
 		fieldTemplate.addNotNullQuery('map_to_field');
+		fieldTemplate.addQuery('email_template', this.template.getUniqueValue());
+
+		if (field_sys_id && field_sys_id != '') {
+			fieldTemplate.addQuery('sys_id', field_sys_id);
+		} else {
+			fieldTemplate.addActiveQuery();
+		}
 		fieldTemplate.orderBy('order');
-		fieldTemplate.addActiveQuery();
 		fieldTemplate.query();
 
 		while (fieldTemplate.next()) {
@@ -79,13 +84,14 @@ EmailParser.prototype = {
 		}
 
 		// now do any post-processing from the email template
-		var gsePost = new GlideScopedEvaluator();
-		gsePost.putVariable("fieldData", this.email_fields);
-		gsePost.putVariable('email', this.email);
-		this.email_fields = gsePost.evaluateScript(this.template, 'post_processing_script');
-
-		this.email_fields["json_body"] = JSON.stringify(this.email_fields);
-
+		// only if we're parsing all fields, not just one specific one
+		if (!field_sys_id || field_sys_id == '') {
+			var gsePost = new GlideScopedEvaluator();
+			gsePost.putVariable("fieldData", this.email_fields);
+			gsePost.putVariable('email', this.email);
+			this.email_fields = gsePost.evaluateScript(this.template, 'post_processing_script');
+			this.email_fields["json_body"] = JSON.stringify(this.email_fields);
+		}
 	},
 
 	/*
@@ -123,7 +129,7 @@ EmailParser.prototype = {
 			var x = this.email_lines.length;
 			var y = this.email_lines;
 			while (fieldIndex < this.email_lines.length &&
-				((post_text == '' && this.email_lines[fieldIndex].trim() != '') ||
+				   ((post_text == '' && this.email_lines[fieldIndex].trim() != '') ||
 					(post_text != '' && !this.email_lines[fieldIndex].startsWith(fieldTemplate.getValue('post_text'))))) {
 				fieldData.push(this.email_lines[fieldIndex].trim() + '');
 				fieldIndex++;
@@ -132,11 +138,16 @@ EmailParser.prototype = {
 
 		fieldData = fieldData.join('\n');
 
-		// pass the resulting data to the post-processing script
-		var gse = new GlideScopedEvaluator();
-		// scripted values need to have the following parameters passed
-		gse.putVariable("fieldData", fieldData);
-		this.email_fields[fieldTemplate.getValue('map_to_field')] = gse.evaluateScript(fieldTemplate, 'post_processing_script');
+		if (fieldTemplate.getValue('post_processing') == true) {
+			// pass the resulting data to the post-processing script
+			var gse = new GlideScopedEvaluator();
+			// scripted values need to have the following parameters passed
+			gse.putVariable("fieldData", fieldData);
+			this.email_fields[fieldTemplate.getValue('map_to_field')] = gse.evaluateScript(fieldTemplate, 'post_processing_script');	
+		} else {
+			this.email_fields[fieldTemplate.getValue('map_to_field')] = fieldData;
+		}
+
 
 	},
 
@@ -157,13 +168,13 @@ EmailParser.prototype = {
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2022-01-26 12:48:28</sys_created_on>
         <sys_id>2ac22b15075101109398fd908c1ed0b3</sys_id>
-        <sys_mod_count>10</sys_mod_count>
+        <sys_mod_count>16</sys_mod_count>
         <sys_name>EmailParser</sys_name>
         <sys_package display_value="Inbound Email Parser" source="x_232327_emailpars">a847d711071101109398fd908c1ed087</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="Inbound Email Parser">a847d711071101109398fd908c1ed087</sys_scope>
         <sys_update_name>sys_script_include_2ac22b15075101109398fd908c1ed0b3</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2022-01-26 14:21:29</sys_updated_on>
+        <sys_updated_on>2022-01-26 16:13:21</sys_updated_on>
     </sys_script_include>
 </record_update>
