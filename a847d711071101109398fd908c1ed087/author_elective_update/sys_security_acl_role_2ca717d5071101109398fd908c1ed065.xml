@@ -42,7 +42,7 @@
         <update_guid_history>a4a717d53e110110fb0936b16ddeb369:-464841173</update_guid_history>
     </sys_update_version>
     <sys_metadata_delete action="INSERT_OR_UPDATE">
-        <sys_audit_delete display_value="x_232327_emailpars_email_template.x_232327_emailpars.read">a0a084a107d101109398fd908c1ed095</sys_audit_delete>
+        <sys_audit_delete display_value="">a0a084a107d101109398fd908c1ed095</sys_audit_delete>
         <sys_class_name>sys_metadata_delete</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2022-01-26 14:55:12</sys_created_on>

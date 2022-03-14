@@ -48,15 +48,15 @@
         <sys_class_name>sys_dictionary</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2022-01-26 11:56:01</sys_created_on>
-        <sys_id>b397d3d5071101109398fd908c1ed0f2</sys_id>
-        <sys_mod_count>1</sys_mod_count>
+        <sys_id>31dc92e01b52c15034269607bc4bcb2b</sys_id>
+        <sys_mod_count>0</sys_mod_count>
         <sys_name>Name</sys_name>
         <sys_package display_value="Inbound Email Parser" source="x_232327_emailpars">a847d711071101109398fd908c1ed087</sys_package>
         <sys_policy/>
         <sys_scope display_value="Inbound Email Parser">a847d711071101109398fd908c1ed087</sys_scope>
         <sys_update_name>sys_dictionary_x_232327_emailpars_email_template_name</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2022-01-26 12:05:53</sys_updated_on>
+        <sys_updated_on>2022-03-14 16:46:39</sys_updated_on>
         <table_reference>false</table_reference>
         <text_index>false</text_index>
         <unique>false</unique>

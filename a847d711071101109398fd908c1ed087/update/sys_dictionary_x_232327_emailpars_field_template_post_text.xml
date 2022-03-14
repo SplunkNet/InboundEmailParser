@@ -53,7 +53,7 @@
         <sys_class_name>sys_dictionary</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2022-01-26 12:15:09</sys_created_on>
-        <sys_id>7d9bdfd9071101109398fd908c1ed0d8</sys_id>
+        <sys_id>4edc92e01b52c15034269607bc4bcb7e</sys_id>
         <sys_mod_count>0</sys_mod_count>
         <sys_name>Post-text</sys_name>
         <sys_package display_value="Inbound Email Parser" source="x_232327_emailpars">a847d711071101109398fd908c1ed087</sys_package>
@@ -61,7 +61,7 @@
         <sys_scope display_value="Inbound Email Parser">a847d711071101109398fd908c1ed087</sys_scope>
         <sys_update_name>sys_dictionary_x_232327_emailpars_field_template_post_text</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2022-01-26 12:15:09</sys_updated_on>
+        <sys_updated_on>2022-03-14 16:46:42</sys_updated_on>
         <table_reference>false</table_reference>
         <text_index>false</text_index>
         <unique>false</unique>

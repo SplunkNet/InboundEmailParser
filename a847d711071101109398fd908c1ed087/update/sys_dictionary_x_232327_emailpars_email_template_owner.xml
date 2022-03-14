@@ -57,15 +57,15 @@
         <sys_class_name>sys_dictionary</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2022-01-26 14:56:07</sys_created_on>
-        <sys_id>b3a08ca107d101109398fd908c1ed0ab</sys_id>
-        <sys_mod_count>3</sys_mod_count>
+        <sys_id>f5dc92e01b52c15034269607bc4bcb2d</sys_id>
+        <sys_mod_count>0</sys_mod_count>
         <sys_name>Owner</sys_name>
         <sys_package display_value="Inbound Email Parser" source="x_232327_emailpars">a847d711071101109398fd908c1ed087</sys_package>
         <sys_policy/>
         <sys_scope display_value="Inbound Email Parser">a847d711071101109398fd908c1ed087</sys_scope>
         <sys_update_name>sys_dictionary_x_232327_emailpars_email_template_owner</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2022-01-26 15:00:53</sys_updated_on>
+        <sys_updated_on>2022-03-14 16:46:39</sys_updated_on>
         <table_reference>false</table_reference>
         <text_index>false</text_index>
         <unique>false</unique>
